@@ -5,7 +5,7 @@ function Component1() {
   return (
     <div>
       <p>COMPONENT-1 - Commit Pace</p>
-      <p>Masih Commit adjah</p>
+      <p>Masih Commit adjah - Nyoba Script</p>
     </div>
   )
 }
