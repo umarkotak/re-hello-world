@@ -4,7 +4,7 @@ function Component1() {
   console.log("hello")
   return (
     <div>
-      <p>COMPONENT-1</p>
+      <p>COMPONENT-1 - Commit Pace</p>
     </div>
   )
 }
