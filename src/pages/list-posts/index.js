@@ -9,26 +9,20 @@ import {
   Badge,
   Button,
 } from 'shards-react'
-import Axios from 'axios'
-import PageTitle from '../../components/common/PageTitle'
+import { listPosts } from '../../api'
 import LoadingComponent from './loading-component'
 
 export default function BlogPosts() {
   const [data, setData] = React.useState()
-  const [isLoading, setIsLoading] = React.useState(false)
+  const [isLoading, setIsLoading] = React.useState(true)
 
   React.useEffect(() => {
-    async function fetchData() {
-      setIsLoading(true)
-      const { data } = await Axios.get(
-        'http://47.254.247.135/eartho/home',
-      ).then(res => res)
-      if (data.success) {
-        setData(data && data.data)
-        setIsLoading(false)
-      }
-    }
-    fetchData()
+    listPosts().then(res => {
+      const { data, isError, isLoading } = res
+      setIsLoading(isLoading)
+      setData(data)
+      if (isError) console.log('Error ==>', isError)
+    })
   }, [])
 
   return (
@@ -59,17 +53,12 @@ export default function BlogPosts() {
         data.feeds.map((item, idx) => (
           <React.Fragment key={String(idx)}>
             <Row noGutters className="page-header py-4">
-              <PageTitle
-                sm="4"
-                title={
-                  <span style={{ textTransform: 'capitalize' }}>
-                    {item.title}
-                  </span>
-                }
-                className="text-sm-left"
-              />
+              <h4 className="text-sm-left" style={{ margin: '0' }}>
+                <span style={{ textTransform: 'capitalize' }}>
+                  {item.title}
+                </span>
+              </h4>
             </Row>
-
             <Row>
               {item &&
                 item.contents.map((items, i) => (

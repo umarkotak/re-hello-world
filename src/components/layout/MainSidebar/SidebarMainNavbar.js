@@ -31,7 +31,13 @@ export default function SidebarMainNavbar({ hideLogoText }) {
               alt="Shards Dashboard"
             />
             {!hideLogoText && (
-              <span className="d-none d-md-inline ml-1">Shards Dashboard</span>
+              <span
+                className="d-none d-md-inline ml-1"
+                role="img"
+                aria-label="lol"
+              >
+                Marian LOL 🤣
+              </span>
             )}
           </div>
         </NavbarBrand>
