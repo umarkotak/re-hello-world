@@ -1,19 +1,30 @@
-import React from "react"
-import {BrowserRouter as Router, Switch, Route} from "react-router-dom"
+import React from 'react'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
+import routes from './routes'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import './shards-dashboard/styles/shards-dashboards.1.1.0.min.css'
 
-import Component1 from "./Component1"
-import Component2 from "./Component2"
-
-function App() {
+export default function App() {
   return (
     <Router>
-      <Switch>
-        <Route path="/" exact component={Component1} />
-        <Route path="/hello-world" exact component={Component2} />
-        <Route path="/hello-world/hey" exact component={Component2} />
-      </Switch>
+      <div>
+        {routes.map((route, index) => {
+          return (
+            <Route
+              key={String(index)}
+              path={route.path}
+              exact={route.exact}
+              component={props => {
+                return (
+                  <route.layout {...props}>
+                    <route.component {...props} />
+                  </route.layout>
+                )
+              }}
+            />
+          )
+        })}
+      </div>
     </Router>
   )
 }
-
-export default App
