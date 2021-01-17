@@ -19,3 +19,31 @@ export const listPosts = async () => {
     }
   }
 }
+
+export const RegisterAccount = async params => {
+  let isLoading = true
+  try {
+    const { data } = await Axios.post(
+      `${baseUrl}/users/register`,
+      JSON.stringify(params.data),
+      {
+        headers: { 'Content-Type': 'application/json' },
+      },
+    )
+    return {
+      isLoading: !isLoading,
+      data: data && data.data,
+      isError: false,
+    }
+  } catch (error) {
+    return {
+      isLoading: !isLoading,
+      data: null,
+      isError:
+        error &&
+        error.response &&
+        error.response.data &&
+        error.response.data.errors,
+    }
+  }
+}
