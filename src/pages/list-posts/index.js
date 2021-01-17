@@ -98,10 +98,10 @@ export default function BlogPosts() {
                           </a>
                           <div className="d-flex flex-column justify-content-center ml-3">
                             <span className="card-post__author-name">
-                              James Khan
+                              {items.creator_name}
                             </span>
                             <small className="text-muted">
-                              {new Date().toDateString()}
+                              {new Date(items.created_at).toDateString()}
                             </small>
                           </div>
                         </div>
