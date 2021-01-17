@@ -10,6 +10,7 @@ import AddNewPost from './pages/add-new-post'
 import ComponentsOverview from './pages/ComponentsOverview'
 import ListPosts from './pages/list-posts'
 import Login from './pages/login'
+import Register from './pages/register'
 
 export default [
   {
@@ -42,5 +43,10 @@ export default [
     path: '/login',
     layout: DefaultLayout,
     component: Login,
+  },
+  {
+    path: '/register',
+    layout: DefaultLayout,
+    component: Register,
   },
 ]
