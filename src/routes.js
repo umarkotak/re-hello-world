@@ -9,6 +9,7 @@ import BlogOverview from './pages/BlogOverview'
 import AddNewPost from './pages/add-new-post'
 import ComponentsOverview from './pages/ComponentsOverview'
 import ListPosts from './pages/list-posts'
+import Login from './pages/login'
 import Register from './pages/register'
 
 export default [
@@ -37,6 +38,11 @@ export default [
     path: '/list-posts',
     layout: DefaultLayout,
     component: ListPosts,
+  },
+  {
+    path: '/login',
+    layout: DefaultLayout,
+    component: Login,
   },
   {
     path: '/register',
