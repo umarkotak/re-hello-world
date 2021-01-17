@@ -57,22 +57,18 @@ export default function Register() {
           message: isError[0],
         })
       } else {
-        setResponseMessage(
-          {
+        setResponseMessage({
+          ...responseMessage,
+          isError: false,
+          isShow: true,
+          message: 'Account Register Success',
+        })
+        setTimeout(() => {
+          setResponseMessage({
             ...responseMessage,
-            isError: false,
-            isShow: true,
-            message: 'Account Register Success',
-          },
-          () => {
-            setTimeout(() => {
-              setResponseMessage({
-                ...responseMessage,
-                isShow: false,
-              })
-            }, 3000)
-          },
-        )
+            isShow: false,
+          })
+        }, 3000)
       }
     })
   }
