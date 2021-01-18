@@ -1,8 +1,9 @@
 import Axios from 'axios'
+import Cookies from 'js-cookie'
 
 const baseUrl = 'http://47.254.247.135/eartho'
 
-export const listPosts = async () => {
+export const ListPosts = async () => {
   let isLoading = true
   try {
     const { data } = await Axios.get(`${baseUrl}/home`)
@@ -38,6 +39,41 @@ export const RegisterAccount = async params => {
   } catch (error) {
     return {
       isLoading: !isLoading,
+      data: null,
+      isError:
+        error &&
+        error.response &&
+        error.response.data &&
+        error.response.data.errors,
+    }
+  }
+}
+
+export const LoginAccount = async params => {
+  try {
+    const { data, status } = await Axios.post(
+      `${baseUrl}/users/login`,
+      JSON.stringify(params.data),
+      {
+        headers: { 'Content-Type': 'application/json' },
+      },
+    )
+    if (status === 200) {
+      Cookies.set('user_data_logged_in', true)
+      Cookies.set('user_data_auth_token', data && data.data.session_key)
+      Cookies.set('user_data_username', data && data.data.username)
+      Cookies.set('user_data_email', data && data.data.email)
+      Cookies.set('user_data_role', data && data.data.role)
+      return {
+        isError: false,
+      }
+    } else {
+      return {
+        isError: true,
+      }
+    }
+  } catch (error) {
+    return {
       data: null,
       isError:
         error &&

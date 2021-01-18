@@ -16,6 +16,7 @@ import {
   InputGroupText,
   Alert,
 } from 'shards-react'
+import { Link } from 'react-router-dom'
 import { RegisterAccount } from '../../api'
 
 export default function Register() {
@@ -93,8 +94,9 @@ export default function Register() {
 
   return (
     <Container fluid className="main-content-container px-4">
+      <Row noGutters className="page-header py-4"></Row>
       <Row>
-        <Col lg="8" className="mb-4 mt-4">
+        <Col sm={{ size: 8, order: 2, offset: 2 }}>
           <Card small>
             <CardHeader className="border-bottom">
               <h6 className="m-0">Register</h6>
@@ -179,6 +181,9 @@ export default function Register() {
                       <FormFeedback>
                         {warning.password_confirmation}
                       </FormFeedback>
+                    </FormGroup>
+                    <FormGroup>
+                      Have account? <Link to={`/login`}>Login Here</Link>
                     </FormGroup>
                     <Button
                       onClick={() => HandleSubmit()}

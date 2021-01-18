@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import {
   Container,
   Row,
@@ -9,43 +9,58 @@ import {
   ListGroupItem,
   FormInput,
   Button,
+  Alert,
 } from 'shards-react'
-import Cookies from 'js-cookie'
+import { Link } from 'react-router-dom'
+import { LoginAccount } from '../../api'
 
 export default function Login() {
-  const [email, set_email] = useState("")
-  const [password, set_password] = useState("")
+  const [data, setData] = React.useState({
+    email: '',
+    password: '',
+  })
+  const [isLoading, setIsLoading] = React.useState(false)
+  const [responseMessage, setResponseMessage] = React.useState({
+    isError: false,
+    isShow: false,
+    message: '',
+  })
 
-
-  async function handleLogin() {
-    try {
-      const response = await fetch("http://47.254.247.135/eartho/users/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: email,
-            password: password
-          })
+  const handleLogin = () => {
+    setIsLoading(true)
+    LoginAccount({ data }).then(res => {
+      setIsLoading(false)
+      const { isError } = res
+      if (isError) {
+        setResponseMessage({
+          ...responseMessage,
+          isError: true,
+          isShow: true,
+          message: isError[0],
         })
-      const results = await response.json()
-      const status = await response.status
-
-      if (status === 200) {
-        Cookies.set("user_data_logged_in", true)
-        Cookies.set("user_data_auth_token", results.data.authentication_token)
-        Cookies.set("user_data_username", results.data.username)
-        Cookies.set("user_data_email", results.data.email)
-        Cookies.set("user_data_role", results.data.role)
-
-        window.location.href = "/"
       } else {
-        console.log(status, results)
+        setResponseMessage({
+          ...responseMessage,
+          isError: false,
+          isShow: true,
+          message: 'Login Success',
+        })
+        setTimeout(() => {
+          setResponseMessage({
+            ...responseMessage,
+            isShow: false,
+          })
+          window.location.href = '/'
+        }, 1000)
       }
-    } catch (error) {
-      console.log(error)
-    }
+    })
+  }
+
+  const HandleChange = (value, key) => {
+    setData({
+      ...data,
+      [key]: value,
+    })
   }
 
   return (
@@ -57,8 +72,7 @@ export default function Login() {
           zIndex: '999',
         }}
       >
-        <Row noGutters className="page-header py-4">
-        </Row>
+        <Row noGutters className="page-header py-4"></Row>
         <Row>
           <Col sm={{ size: 8, order: 2, offset: 2 }}>
             <Card small>
@@ -68,35 +82,68 @@ export default function Login() {
               <ListGroup flush>
                 <ListGroupItem className="p-3">
                   <Row>
+                    {responseMessage.isShow && (
+                      <Alert
+                        className={`${
+                          responseMessage.isError
+                            ? 'alert-danger'
+                            : 'alert-primary'
+                        }`}
+                      >
+                        <i className="fa fa-info mx-2"></i>{' '}
+                        {responseMessage.message}
+                      </Alert>
+                    )}
+                  </Row>
+                  <Row>
                     <Col>
-                        <Row form>
-                          <Col md="6" className="form-group">
-                            <label htmlFor="feEmailAddress">Email</label>
-                            <FormInput
-                              id="feEmailAddress"
-                              type="email"
-                              placeholder="Email"
-                              onChange={(e) => set_email(e.target.value)}
-                            />
-                          </Col>
-                          <Col md="6">
-                            <label htmlFor="fePassword">Password</label>
-                            <FormInput
-                              id="fePassword"
-                              type="password"
-                              placeholder="Password"
-                              onChange={(e) => set_password(e.target.value)}
-                            />
-                          </Col>
-                        </Row>
+                      <Row form>
+                        <Col md="6" className="form-group">
+                          <label htmlFor="feEmailAddress">Email</label>
+                          <FormInput
+                            id="feEmailAddress"
+                            type="email"
+                            placeholder="Email"
+                            value={data.email}
+                            onChange={e =>
+                              HandleChange(e.target.value, 'email')
+                            }
+                          />
+                        </Col>
+                        <Col md="6">
+                          <label htmlFor="fePassword">Password</label>
+                          <FormInput
+                            id="fePassword"
+                            type="password"
+                            placeholder="Password"
+                            value={data.password}
+                            onChange={e =>
+                              HandleChange(e.target.value, 'password')
+                            }
+                          />
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col md="6" className="form-group"></Col>
+                        <Col md="6" className="form-group text-sm-right">
+                          Don't have an account yet?{' '}
+                          <Link to={`/register`}>Register Here</Link>
+                        </Col>
+                      </Row>
 
-                        <Button
-                          className="float-right"
-                          type="submit"
-                          onClick={() => handleLogin()}
-                        >
-                          <i className="material-icons">login</i> Login
-                        </Button>
+                      <Button
+                        className="float-right"
+                        type="submit"
+                        onClick={() => handleLogin()}
+                      >
+                        {isLoading ? (
+                          `Loading ...`
+                        ) : (
+                          <span>
+                            <i className="material-icons">login</i> Login
+                          </span>
+                        )}
+                      </Button>
                     </Col>
                   </Row>
                 </ListGroupItem>

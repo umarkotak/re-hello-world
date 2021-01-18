@@ -9,7 +9,7 @@ import {
   Badge,
   Button,
 } from 'shards-react'
-import { listPosts } from '../../api'
+import { ListPosts } from '../../api'
 import LoadingComponent from './loading-component'
 
 export default function BlogPosts() {
@@ -17,7 +17,7 @@ export default function BlogPosts() {
   const [isLoading, setIsLoading] = React.useState(true)
 
   React.useEffect(() => {
-    listPosts().then(res => {
+    ListPosts().then(res => {
       const { data, isError, isLoading } = res
       setIsLoading(isLoading)
       setData(data)
