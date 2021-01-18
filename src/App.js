@@ -2,6 +2,7 @@ import React from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import routes from './routes'
 import SplashScreen from './splash-screen'
+import { isLoggedIn } from './utils/helpers'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './shards-dashboard/styles/shards-dashboards.1.1.0.min.css'
 
@@ -13,6 +14,8 @@ export default function App() {
       setIsLoading(isLoading => !isLoading)
     }, 2000)
   }, [])
+
+  console.log('datanya ==>', isLoggedIn())
 
   if (isLoading) return <SplashScreen />
   return (
@@ -27,7 +30,11 @@ export default function App() {
               component={props => {
                 return (
                   <route.layout {...props}>
-                    <route.component {...props} />
+                    {route.isLoggedIn === false ? (
+                      <route.loginComponent {...props} />
+                    ) : (
+                      <route.component {...props} />
+                    )}
                   </route.layout>
                 )
               }}

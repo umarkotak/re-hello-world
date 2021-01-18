@@ -3,6 +3,7 @@ import { Redirect } from 'react-router-dom'
 
 // Layout Types
 import { DefaultLayout } from './layouts'
+import { isLoggedIn } from './utils/helpers'
 
 // Route Views
 import BlogOverview from './pages/BlogOverview'
@@ -28,6 +29,8 @@ export default [
     path: '/add-new-post',
     layout: DefaultLayout,
     component: AddNewPost,
+    isLoggedIn: isLoggedIn(),
+    loginComponent: () => <Redirect to="/login" />,
   },
   {
     path: '/components-overview',
