@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import routes from './routes'
 import SplashScreen from './splash-screen'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -20,22 +20,23 @@ export default function App() {
       <div>
         {routes.map((route, index) => {
           return (
-            <Route
-              key={String(index)}
-              path={route.path}
-              exact={route.exact}
-              component={props => {
-                return (
-                  <route.layout {...props}>
-                    {route.isLoggedIn === false ? (
-                      <route.loginComponent {...props} />
-                    ) : (
-                      <route.component {...props} />
-                    )}
-                  </route.layout>
-                )
-              }}
-            />
+            <Switch key={String(index)}>
+              <Route
+                path={route.path}
+                exact={route.exact}
+                component={props => {
+                  return (
+                    <route.layout {...props}>
+                      {route.isLoggedIn === false ? (
+                        <route.loginComponent {...props} />
+                      ) : (
+                        <route.component {...props} />
+                      )}
+                    </route.layout>
+                  )
+                }}
+              />
+            </Switch>
           )
         })}
       </div>

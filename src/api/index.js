@@ -21,6 +21,24 @@ export const ListPosts = async () => {
   }
 }
 
+export const DetailPost = async params => {
+  let isLoading = true
+  try {
+    const { data } = await Axios.get(`${baseUrl}/contents/${params.id}`)
+    return {
+      isLoading: !isLoading,
+      data: data && data.data,
+      isError: false,
+    }
+  } catch (error) {
+    return {
+      isLoading: isLoading,
+      data: null,
+      isError: error,
+    }
+  }
+}
+
 export const RegisterAccount = async params => {
   let isLoading = true
   try {

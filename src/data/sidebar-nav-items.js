@@ -7,14 +7,14 @@ export default function() {
     //   htmlAfter: '',
     // },
     {
-      title: 'List Posts',
+      title: 'Posts',
       htmlBefore: '<i class="material-icons">vertical_split</i>',
-      to: '/list-posts',
+      to: '/posts',
     },
     {
       title: 'Add New Post',
       htmlBefore: '<i class="material-icons">note_add</i>',
-      to: '/add-new-post',
+      to: '/add-post',
     },
     // {
     //   title: 'Forms & Components',

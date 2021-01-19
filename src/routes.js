@@ -10,15 +10,16 @@ import BlogOverview from './pages/BlogOverview'
 import AddNewPost from './pages/add-new-post'
 import ComponentsOverview from './pages/ComponentsOverview'
 import ListPosts from './pages/list-posts'
+import DetailPost from './pages/detail-post'
 import Login from './pages/login'
 import Register from './pages/register'
 
-export default [
+const Routes = [
   {
     path: '/',
     exact: true,
     layout: DefaultLayout,
-    component: () => <Redirect to="/list-posts" />,
+    component: () => <Redirect to="/posts" />,
   },
   {
     path: '/blog-overview',
@@ -26,7 +27,7 @@ export default [
     component: BlogOverview,
   },
   {
-    path: '/add-new-post',
+    path: '/add-post',
     layout: DefaultLayout,
     component: AddNewPost,
     isLoggedIn: isLoggedIn(),
@@ -38,9 +39,14 @@ export default [
     component: ComponentsOverview,
   },
   {
-    path: '/list-posts',
+    path: '/posts',
     layout: DefaultLayout,
     component: ListPosts,
+  },
+  {
+    path: '/post/:id',
+    layout: DefaultLayout,
+    component: DetailPost,
   },
   {
     path: '/login',
@@ -53,3 +59,5 @@ export default [
     component: Register,
   },
 ]
+
+export default Routes
