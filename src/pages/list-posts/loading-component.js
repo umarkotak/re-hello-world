@@ -5,8 +5,16 @@ import { HashLoader } from 'react-spinners'
 export default function LoadingComponent() {
   return (
     <Row>
-      <Col className="d-flex justify-content-center align-items-center">
-        <HashLoader color={`#007bff`} size={50} />
+      <Col md="12" lg="12">
+        <div
+          style={{
+            padding: '10rem',
+          }}
+        >
+          <div className="error__content">
+            <HashLoader color={`#007bff`} size={50} />
+          </div>
+        </div>
       </Col>
     </Row>
   )

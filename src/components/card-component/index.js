@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Card, Badge, CardBody, CardFooter, Button } from 'shards-react'
 import ReactPlayer from 'react-player'
+import { isLoggedIn } from '../../utils/helpers'
 
 /**
  *
@@ -9,6 +10,7 @@ import ReactPlayer from 'react-player'
  * @param {string} props.imageUrlPost,
  * @param {string} props.titleTagPost,
  * @param {string} props.descriptionPost,
+ * @param {string} props.textContentPost,
  * @param {string} props.datePost,
  * @param {string, number} props.countLikePost,
  * @param {string, number} props.countCommentPost,
@@ -22,6 +24,7 @@ export default function CardComponent({
   videoUrlPost,
   titleTagPost,
   descriptionPost,
+  textContentPost,
   datePost,
   countLikePost,
   likePost,
@@ -44,14 +47,29 @@ export default function CardComponent({
               backgroundImage: `url(${imageUrlPost})`,
               height: `${size === 'sm' ? '250px' : '500px'}`,
             }}
-          ></div>
+          >
+            {size === 'sm' && (
+              <Badge pill className={`card-post__category bg-primary`}>
+                <span style={{ textTransform: 'capitalize' }}>
+                  {titleTagPost}
+                </span>
+              </Badge>
+            )}
+          </div>
           <CardBody>
-            <Badge pill className={`card-post__category bg-primary`}>
-              <span style={{ textTransform: 'capitalize' }}>
-                {titleTagPost}
-              </span>
-            </Badge>
-            <p className="card-text text-muted">{descriptionPost}</p>
+            {size === 'lg' && (
+              <Badge pill className={`card-post__category bg-primary`}>
+                <span style={{ textTransform: 'capitalize' }}>
+                  {titleTagPost}
+                </span>
+              </Badge>
+            )}
+            <p className="card-text text-muted" style={{ fontSize: '14px' }}>
+              {descriptionPost}
+            </p>
+            {textContentPost && (
+              <div dangerouslySetInnerHTML={{ __html: textContentPost }} />
+            )}
           </CardBody>
         </Link>
       ) : (
@@ -74,12 +92,22 @@ export default function CardComponent({
             )}
           </div>
           <CardBody>
-            <Badge pill className={`card-post__category bg-primary`}>
-              <span style={{ textTransform: 'capitalize' }}>
-                {titleTagPost}
-              </span>
-            </Badge>
-            <p className="card-text text-muted">{descriptionPost}</p>
+            {titleTagPost && (
+              <Badge pill className={`card-post__category bg-primary`}>
+                <span style={{ textTransform: 'capitalize' }}>
+                  {titleTagPost}
+                </span>
+              </Badge>
+            )}
+            <p
+              className="card-text text-muted"
+              style={{ fontSize: '18px', margin: '0' }}
+            >
+              {descriptionPost}
+            </p>
+            {textContentPost && (
+              <div dangerouslySetInnerHTML={{ __html: textContentPost }} />
+            )}
           </CardBody>
         </React.Fragment>
       )}
@@ -103,20 +131,37 @@ export default function CardComponent({
           </div>
         </div>
         <div className="my-auto ml-auto">
-          <Button
-            id={`${elementId}`}
-            className="mr-1"
-            size="sm"
-            theme="white"
-            onClick={handleClickLike}
-            value={countLikePost}
-          >
-            <i
-              className={`fas fa-heart ${likePost ? 'text-danger' : ''}`}
-              title="bookmark"
-            />{' '}
-            {countLikePost}
-          </Button>
+          {isLoggedIn() ? (
+            <Button
+              id={`${elementId}`}
+              className="mr-1"
+              size="sm"
+              theme="white"
+              onClick={handleClickLike}
+            >
+              <i
+                className={`fas fa-heart ${likePost ? 'text-danger' : ''}`}
+                title="bookmark"
+              />{' '}
+              <span>{countLikePost}</span>
+            </Button>
+          ) : (
+            <Link to={`/login`}>
+              <Button
+                id={`${elementId}`}
+                className="mr-1"
+                size="sm"
+                theme="white"
+                onClick={handleClickLike}
+              >
+                <i
+                  className={`fas fa-heart ${likePost ? 'text-danger' : ''}`}
+                  title="bookmark"
+                />{' '}
+                <span>{countLikePost}</span>
+              </Button>
+            </Link>
+          )}
           <Button size="sm" theme="white">
             <i className="fas fa-comment" title="bookmark" /> {countCommentPost}
           </Button>

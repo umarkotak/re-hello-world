@@ -24,3 +24,10 @@ export const userLoggedOut = () => {
   Cookies.remove('user_data_role')
   window.location.href = '/'
 }
+
+export const mappingListPosts = (params) => {
+  let tmp = params && params.feeds.filter((i) => i.contents.length)
+  return {
+    feeds: tmp,
+  }
+}

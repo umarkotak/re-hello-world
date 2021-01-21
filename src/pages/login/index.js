@@ -80,21 +80,21 @@ export default function Login() {
                 <h6 className="m-0">Login</h6>
               </CardHeader>
               <ListGroup flush>
+                <Container fluid className="px-0">
+                  {responseMessage.isShow && (
+                    <Alert
+                      className={`${
+                        responseMessage.isError
+                          ? 'alert-danger'
+                          : 'alert-primary'
+                      }`}
+                    >
+                      <i className="fa fa-info mx-2"></i>{' '}
+                      {responseMessage.message}
+                    </Alert>
+                  )}
+                </Container>
                 <ListGroupItem className="p-3">
-                  <Row>
-                    {responseMessage.isShow && (
-                      <Alert
-                        className={`${
-                          responseMessage.isError
-                            ? 'alert-danger'
-                            : 'alert-primary'
-                        }`}
-                      >
-                        <i className="fa fa-info mx-2"></i>{' '}
-                        {responseMessage.message}
-                      </Alert>
-                    )}
-                  </Row>
                   <Row>
                     <Col>
                       <Row form>
