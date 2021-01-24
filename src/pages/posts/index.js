@@ -1,7 +1,7 @@
 import React from 'react'
 import { Container, Row, Col, Alert, Button } from 'shards-react'
 import { Link } from 'react-router-dom'
-import { ListPosts } from '../../api'
+import { ListPosts, LikePost, UnlikePost } from '../../api'
 import { isLoggedIn } from '../../utils/helpers'
 import CardComponent from '../../components/card-component'
 import LoadingComponent from './loading-component'
@@ -13,33 +13,35 @@ export default function BlogPosts({ match }) {
   React.useEffect(() => {
     ListPosts().then(res => {
       const { data, isError, isLoading } = res
-      console.log('datanya ===>', data)
+      // console.log('datanya ===>', data)
       setIsLoading(isLoading)
       setData(data)
       if (isError) console.log('Error ==>', isError)
     })
   }, [])
 
-  const HandleClickLike = val => {
+  const HandleClickLike = (el, id) => {
     let like = document
-        .getElementById(`${val}`)
+        .getElementById(`${el}`)
         .firstElementChild.classList.contains('text-danger'),
-      valueLike = document.getElementById(`${val}`).textContent
+      valueLike = document.getElementById(`${el}`).textContent
 
     if (like) {
       document
-        .getElementById(`${val}`)
+        .getElementById(`${el}`)
         .firstElementChild.classList.remove('text-danger')
       document.getElementById(
-        `${val}`,
+        `${el}`,
       ).lastElementChild.textContent = `${parseInt(valueLike) - 1}`
+      UnlikePost(id)
     } else {
       document
-        .getElementById(`${val}`)
+        .getElementById(`${el}`)
         .firstElementChild.classList.toggle('text-danger')
       document.getElementById(
-        `${val}`,
+        `${el}`,
       ).lastElementChild.textContent = `${parseInt(valueLike) + 1}`
+      LikePost(id)
     }
   }
 
@@ -100,11 +102,15 @@ export default function BlogPosts({ match }) {
                         descriptionPost={items.description}
                         datePost={items.created_at}
                         countLikePost={items.count_like}
+                        likePost={items.liked_by_me}
                         countCommentPost={items.count_comment}
                         imageUrlCreator={require('../../images/avatars/3.jpg')}
                         titleCreator={items.creator_name}
                         handleClickLike={() =>
-                          HandleClickLike(`posts-${items.content_id}`)
+                          HandleClickLike(
+                            `posts-${items.content_id}`,
+                            items.content_id,
+                          )
                         }
                       />
                     </Col>
@@ -123,7 +129,7 @@ export default function BlogPosts({ match }) {
           >
             <div className="error__content">
               <h3>
-                <i class="material-icons">vertical_split</i>Posts not exists
+                <i className="material-icons">vertical_split</i>Posts not exists
               </h3>
               <a href="/" style={{ textDecoration: 'none', color: '#fff' }}>
                 <Button pill>refresh</Button>

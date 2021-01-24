@@ -1,6 +1,6 @@
 import React from 'react'
 import { Container, Row, Col } from 'shards-react'
-import { DetailPost } from '../../api'
+import { DetailPost, LikePost, UnlikePost } from '../../api'
 import CardComponent from '../../components/card-component'
 import LoadingComponent from './loading-component'
 
@@ -15,29 +15,30 @@ export default function BlogPosts({ match }) {
       setData(data)
       if (isError) console.log('Error ==>', isError)
     })
-    window.location.href = "#textform"
   }, [])
 
-  const HandleClickLike = val => {
+  const HandleClickLike = (el, id) => {
     let like = document
-        .getElementById(`${val}`)
+        .getElementById(`${el}`)
         .firstElementChild.classList.contains('text-danger'),
-      valueLike = document.getElementById(`${val}`).textContent
+      valueLike = document.getElementById(`${el}`).textContent
 
     if (like) {
       document
-        .getElementById(`${val}`)
+        .getElementById(`${el}`)
         .firstElementChild.classList.remove('text-danger')
       document.getElementById(
-        `${val}`,
+        `${el}`,
       ).lastElementChild.textContent = `${parseInt(valueLike) - 1}`
+      UnlikePost(id)
     } else {
       document
-        .getElementById(`${val}`)
+        .getElementById(`${el}`)
         .firstElementChild.classList.toggle('text-danger')
       document.getElementById(
-        `${val}`,
+        `${el}`,
       ).lastElementChild.textContent = `${parseInt(valueLike) + 1}`
+      LikePost(id)
     }
   }
 
@@ -83,10 +84,13 @@ export default function BlogPosts({ match }) {
                   textContentPost={data.text_content}
                   datePost={data.created_at}
                   countLikePost={data.count_like}
+                  likePost={data.liked_by_me}
                   countCommentPost={data.count_comment}
                   imageUrlCreator={require('../../images/avatars/3.jpg')}
                   titleCreator={data.creator_name}
-                  handleClickLike={() => HandleClickLike('post-1')}
+                  handleClickLike={() =>
+                    HandleClickLike('post-1', match.params.id)
+                  }
                   size="lg"
                 />
               </Col>

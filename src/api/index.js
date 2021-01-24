@@ -5,9 +5,12 @@ import { mappingListPosts } from '../utils/helpers'
 const baseUrl = 'http://47.254.247.135/eartho'
 
 export const ListPosts = async () => {
+  const token = Cookies.get('user_data_auth_token')
   let isLoading = true
   try {
-    const { data } = await Axios.get(`${baseUrl}/home`)
+    const { data } = await Axios.get(`${baseUrl}/home`, {
+      headers: { Authorization: token },
+    })
     return {
       isLoading: !isLoading,
       data: mappingListPosts(data && data.data),
@@ -41,9 +44,14 @@ export const ListCategories = async () => {
 }
 
 export const DetailPost = async params => {
+  const token = Cookies.get('user_data_auth_token')
   let isLoading = true
   try {
-    const { data } = await Axios.get(`${baseUrl}/contents/${params.id}`)
+    const { data } = await Axios.get(`${baseUrl}/contents/${params.id}`, {
+      headers: {
+        Authorization: token,
+      },
+    })
     return {
       isLoading: !isLoading,
       data: data && data.data,
@@ -108,6 +116,62 @@ export const AddPost = async params => {
   } catch (error) {
     return {
       data: null,
+      isError:
+        error &&
+        error.response &&
+        error.response.data &&
+        error.response.data.errors,
+    }
+  }
+}
+
+export const LikePost = async id => {
+  const token = Cookies.get('user_data_auth_token')
+  try {
+    const { status } = await Axios.post(
+      `${baseUrl}/contents/${id}/like`,
+      {},
+      {
+        headers: {
+          Authorization: token,
+        },
+      },
+    )
+    if (status === 200) {
+      return {
+        isError: false,
+      }
+    }
+  } catch (error) {
+    return {
+      isError:
+        error &&
+        error.response &&
+        error.response.data &&
+        error.response.data.errors,
+    }
+  }
+}
+
+export const UnlikePost = async id => {
+  const token = Cookies.get('user_data_auth_token')
+  try {
+    const { status } = await Axios.post(
+      `${baseUrl}/contents/${id}/unlike`,
+      {},
+      {
+        headers: {
+          Authorization: token,
+        },
+      },
+    )
+    if (status === 200) {
+      return {
+        isError: false,
+      }
+    }
+  } catch (error) {
+    return {
       isError:
         error &&
         error.response &&
