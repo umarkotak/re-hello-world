@@ -3,7 +3,6 @@ import {
   Card,
   CardHeader,
   CardBody,
-  ButtonGroup,
   Button,
   Row,
   Col,
@@ -16,6 +15,7 @@ export default function Comments({
   HandleOnChange,
   HandleSubmitComment,
 }) {
+  console.log('datanya ===>', comments)
   return (
     <Card small className="blog-comments mb-4">
       <CardHeader className="border-bottom">
@@ -58,13 +58,11 @@ export default function Comments({
                   </span>
                 </div>
                 <p className="m-0 my-1 mb-2 text-muted">{item.comment}</p>
-                <div className="blog-comments__actions">
-                  <ButtonGroup size="sm">
-                    <Button theme="white">
-                      <i class="fas fa-heart text-danger" title="bookmark"></i>
-                    </Button>
-                  </ButtonGroup>
-                </div>
+                {item.liked_by_me && (
+                  <div className="blog-comments__actions">
+                    <i class="fas fa-heart text-danger"></i>
+                  </div>
+                )}
               </div>
             </div>
           ))}
