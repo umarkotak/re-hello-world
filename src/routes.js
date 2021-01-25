@@ -52,8 +52,6 @@ const Routes = [
     path: '/login',
     layout: DefaultLayout,
     component: Login,
-    isLoggedIn: isLoggedIn(),
-    homeComponent: () => <Redirect to="/posts" />,
   },
   {
     path: '/register',
