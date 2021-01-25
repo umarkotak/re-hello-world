@@ -1,16 +1,19 @@
 import React from 'react'
 import { Container, Row, Col } from 'shards-react'
-import { DetailPost, LikePost, UnlikePost } from '../../api'
+import { DetailPost, LikePost, UnlikePost, CommentPost } from '../../api'
 import CardComponent from '../../components/card-component'
+import CommentComponent from './comments'
 import LoadingComponent from './loading-component'
 
-export default function BlogPosts({ match }) {
+export default function DetailPostContainer({ match }) {
   const [data, setData] = React.useState()
+  const [comment, setComment] = React.useState()
   const [isLoading, setIsLoading] = React.useState(true)
 
   React.useEffect(() => {
     DetailPost({ id: match.params.id }).then(res => {
       const { data, isError, isLoading } = res
+      console.log('datanya ===>', data)
       setIsLoading(isLoading)
       setData(data)
       if (isError) console.log('Error ==>', isError)
@@ -40,6 +43,31 @@ export default function BlogPosts({ match }) {
       ).lastElementChild.textContent = `${parseInt(valueLike) + 1}`
       LikePost(id)
     }
+  }
+
+  const HandleOnChange = val => {
+    setComment(val)
+  }
+
+  const HandleSubmitComment = () => {
+    CommentPost({
+      data: {
+        comment: comment,
+      },
+      id: match.params.id,
+    }).then(res => {
+      const { isError } = res
+      if (!isError) {
+        setComment('')
+        setIsLoading(true)
+        DetailPost({ id: match.params.id }).then(res => {
+          const { data, isError, isLoading } = res
+          setIsLoading(isLoading)
+          setData(data)
+          if (isError) console.log('Error ==>', isError)
+        })
+      }
+    })
   }
 
   return (
@@ -85,8 +113,9 @@ export default function BlogPosts({ match }) {
                   datePost={data.created_at}
                   countLikePost={data.count_like}
                   likePost={data.liked_by_me}
+                  whoLikesContent={data.user_who_likes}
                   countCommentPost={data.count_comment}
-                  imageUrlCreator={require('../../images/avatars/3.jpg')}
+                  imageUrlCreator={data.creator_avatar_url}
                   titleCreator={data.creator_name}
                   handleClickLike={() =>
                     HandleClickLike('post-1', match.params.id)
@@ -95,6 +124,16 @@ export default function BlogPosts({ match }) {
                 />
               </Col>
             )}
+          </Row>
+          <Row>
+            <Col lg="12" md="12">
+              <CommentComponent
+                valueComment={comment}
+                HandleOnChange={HandleOnChange}
+                HandleSubmitComment={HandleSubmitComment}
+                comments={data && data.comments}
+              />
+            </Col>
           </Row>
         </React.Fragment>
       )}

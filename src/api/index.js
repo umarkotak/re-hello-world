@@ -125,6 +125,37 @@ export const AddPost = async params => {
   }
 }
 
+export const CommentPost = async params => {
+  const token = Cookies.get('user_data_auth_token')
+  try {
+    const { data, status } = await Axios.post(
+      `${baseUrl}/contents/${params.id}/comment`,
+      JSON.stringify(params.data),
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+      },
+    )
+    if (status === 200) {
+      return {
+        data: data,
+        isError: false,
+      }
+    }
+  } catch (error) {
+    return {
+      data: null,
+      isError:
+        error &&
+        error.response &&
+        error.response.data &&
+        error.response.data.errors,
+    }
+  }
+}
+
 export const LikePost = async id => {
   const token = Cookies.get('user_data_auth_token')
   try {
@@ -194,6 +225,7 @@ export const LoginAccount = async params => {
       Cookies.set('user_data_logged_in', true)
       Cookies.set('user_data_auth_token', data && data.data.session_key)
       Cookies.set('user_data_username', data && data.data.username)
+      Cookies.set('user_data_avatar_url', data && data.data.avatar_url)
       Cookies.set('user_data_email', data && data.data.email)
       Cookies.set('user_data_role', data && data.data.role)
       return {

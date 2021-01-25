@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Card, Badge, CardBody, CardFooter, Button } from 'shards-react'
 import ReactPlayer from 'react-player'
-import { isLoggedIn } from '../../utils/helpers'
+import { isLoggedIn, wordingLikesContent } from '../../utils/helpers'
 
 /**
  *
@@ -28,6 +28,7 @@ export default function CardComponent({
   datePost,
   countLikePost,
   likePost,
+  whoLikesContent,
   countCommentPost,
   imageUrlCreator,
   titleCreator,
@@ -131,6 +132,11 @@ export default function CardComponent({
           </div>
         </div>
         <div className="my-auto ml-auto">
+          {whoLikesContent && (
+            <span className="mr-1">
+              {wordingLikesContent(whoLikesContent, countLikePost)}
+            </span>
+          )}
           {isLoggedIn() ? (
             <Button
               id={`${elementId}`}

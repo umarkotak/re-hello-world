@@ -69,7 +69,8 @@ export default function Register() {
             ...responseMessage,
             isShow: false,
           })
-        }, 3000)
+          window.location.href = '/login'
+        }, 2000)
       }
     })
   }

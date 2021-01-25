@@ -7,10 +7,12 @@ export const isLoggedIn = () => {
 
 export const userLoggedIn = () => {
   const username = Cookies.get('user_data_username')
+  const avatar_url = Cookies.get('user_data_avatar_url')
   const email = Cookies.get('user_data_email')
   const role = Cookies.get('user_data_role')
   return {
     username: username,
+    avatar_url: avatar_url,
     email: email,
     role: role,
   }
@@ -25,9 +27,24 @@ export const userLoggedOut = () => {
   window.location.href = '/'
 }
 
-export const mappingListPosts = (params) => {
-  let tmp = params && params.feeds.filter((i) => i.contents.length)
+export const mappingListPosts = params => {
+  let tmp = params && params.feeds.filter(i => i.contents.length)
   return {
     feeds: tmp,
   }
+}
+
+export const wordingLikesContent = (data, count) => {
+  const val = count - data.length
+  let word = ''
+  data.forEach(element => {
+    word += element + ', '
+  })
+  return `${word.slice(0, -2)} ${
+    val > 1
+      ? ` and ${val} Users like post`
+      : data.length === 1
+      ? ` and ${data.length} User like post`
+      : `like post`
+  }`
 }

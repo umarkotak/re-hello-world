@@ -13,7 +13,6 @@ export default function BlogPosts({ match }) {
   React.useEffect(() => {
     ListPosts().then(res => {
       const { data, isError, isLoading } = res
-      // console.log('datanya ===>', data)
       setIsLoading(isLoading)
       setData(data)
       if (isError) console.log('Error ==>', isError)
@@ -104,7 +103,7 @@ export default function BlogPosts({ match }) {
                         countLikePost={items.count_like}
                         likePost={items.liked_by_me}
                         countCommentPost={items.count_comment}
-                        imageUrlCreator={require('../../images/avatars/3.jpg')}
+                        imageUrlCreator={items.creator_avatar_url}
                         titleCreator={items.creator_name}
                         handleClickLike={() =>
                           HandleClickLike(
