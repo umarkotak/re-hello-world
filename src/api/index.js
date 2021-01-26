@@ -25,6 +25,45 @@ export const ListPosts = async () => {
   }
 }
 
+export const ProfileDetail = async id => {
+  let isLoading = true
+  try {
+    const { data } = await Axios.get(`${baseUrl}/profile/${id}/info`)
+    return {
+      isLoading: !isLoading,
+      data: data && data.data,
+      isError: false,
+    }
+  } catch (error) {
+    return {
+      isLoading: isLoading,
+      data: null,
+      isError: error,
+    }
+  }
+}
+
+export const ProfileMe = async () => {
+  const token = Cookies.get('user_data_auth_token')
+  let isLoading = true
+  try {
+    const { data } = await Axios.get(`${baseUrl}/profile/me`, {
+      headers: { Authorization: token },
+    })
+    return {
+      isLoading: !isLoading,
+      data: data && data.data,
+      isError: false,
+    }
+  } catch (error) {
+    return {
+      isLoading: isLoading,
+      data: null,
+      isError: error,
+    }
+  }
+}
+
 export const ListCategories = async () => {
   let isLoading = true
   try {

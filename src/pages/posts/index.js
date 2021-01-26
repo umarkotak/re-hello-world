@@ -44,6 +44,8 @@ export default function BlogPosts({ match }) {
     }
   }
 
+  console.log('datanya ===>', data)
+
   return (
     <React.Fragment>
       {!isLoggedIn() && (
@@ -105,6 +107,7 @@ export default function BlogPosts({ match }) {
                         countCommentPost={items.count_comment}
                         imageUrlCreator={items.creator_avatar_url}
                         titleCreator={items.creator_name}
+                        idCreator={items.creator_id}
                         handleClickLike={() =>
                           HandleClickLike(
                             `posts-${items.content_id}`,

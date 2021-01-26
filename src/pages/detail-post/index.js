@@ -117,6 +117,7 @@ export default function DetailPostContainer({ match }) {
                   countCommentPost={data.count_comment}
                   imageUrlCreator={data.creator_avatar_url}
                   titleCreator={data.creator_name}
+                  idCreator={data.creator_id}
                   handleClickLike={() =>
                     HandleClickLike('post-1', match.params.id)
                   }

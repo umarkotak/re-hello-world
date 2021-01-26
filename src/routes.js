@@ -13,6 +13,8 @@ import ListPosts from './pages/posts'
 import DetailPost from './pages/detail-post'
 import Login from './pages/login'
 import Register from './pages/register'
+import Me from './pages/me'
+import DetailProfile from './pages/detail-profile'
 
 const Routes = [
   {
@@ -32,6 +34,18 @@ const Routes = [
     component: AddNewPost,
     isLoggedIn: isLoggedIn(),
     loginComponent: () => <Redirect to="/login" />,
+  },
+  {
+    path: '/me',
+    layout: DefaultLayout,
+    component: Me,
+    isLoggedIn: isLoggedIn(),
+    loginComponent: () => <Redirect to="/login" />,
+  },
+  {
+    path: '/profile/:id',
+    layout: DefaultLayout,
+    component: DetailProfile,
   },
   {
     path: '/components-overview',

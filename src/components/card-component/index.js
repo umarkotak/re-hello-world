@@ -2,7 +2,11 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Card, Badge, CardBody, CardFooter, Button } from 'shards-react'
 import ReactPlayer from 'react-player'
-import { isLoggedIn, wordingLikesContent } from '../../utils/helpers'
+import {
+  isLoggedIn,
+  userLoggedIn,
+  wordingLikesContent,
+} from '../../utils/helpers'
 
 /**
  *
@@ -32,6 +36,7 @@ export default function CardComponent({
   countCommentPost,
   imageUrlCreator,
   titleCreator,
+  idCreator,
   size,
   handleClickLike,
 }) {
@@ -115,17 +120,32 @@ export default function CardComponent({
 
       <CardFooter className="border-top d-flex">
         <div className="card-post__author d-flex">
-          <a
-            href="/#"
-            className="card-post__author-avatar card-post__author-avatar--small"
-            style={{
-              backgroundImage: `url('${imageUrlCreator}')`,
-            }}
+          <Link
+            to={`${
+              userLoggedIn().username === titleCreator
+                ? '/me'
+                : '/profile/' + idCreator
+            }`}
+            style={{ textDecoration: 'none' }}
           >
-            Written by James Khan
-          </a>
+            <span
+              className="card-post__author-avatar card-post__author-avatar--small"
+              style={{
+                backgroundImage: `url('${imageUrlCreator}')`,
+              }}
+            ></span>
+          </Link>
           <div className="d-flex flex-column justify-content-center ml-3">
-            <span className="card-post__author-name">{titleCreator}</span>
+            <Link
+              to={`${
+                userLoggedIn().username === titleCreator
+                  ? '/me'
+                  : '/profile/' + idCreator
+              }`}
+              style={{ textDecoration: 'none', color: '#3d5170' }}
+            >
+              <span className="card-post__author-name">{titleCreator}</span>
+            </Link>
             <small className="text-muted">
               {new Date(datePost).toDateString()}
             </small>

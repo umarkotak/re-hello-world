@@ -42,9 +42,8 @@ export default function UserActions() {
             </span>
           </DropdownToggle>
           <Collapse tag={DropdownMenu} right small open={state.visible}>
-            <DropdownItem>
-              <i className="material-icons">&#xE7FD;</i> @
-              {userLoggedIn().username}
+            <DropdownItem tag={Link} to={`/me`}>
+              <i className="material-icons">&#xE7FD;</i> Profile
             </DropdownItem>
             <DropdownItem divider />
             <DropdownItem

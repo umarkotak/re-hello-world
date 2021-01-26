@@ -40,11 +40,20 @@ export const wordingLikesContent = (data, count) => {
   data.forEach(element => {
     word += element + ', '
   })
-  return `${word.slice(0, -2)} ${
-    val > 1
-      ? ` and ${val} Users like post`
-      : data.length === 1
-      ? ` and ${data.length} User like post`
-      : `like post`
-  }`
+  if (count > 0) {
+    return `${word.slice(0, -2)} ${
+      val > 1
+        ? ` and ${val} Users like post`
+        : data.length === 1
+        ? ` and ${data.length} User like post`
+        : `like post`
+    }`
+  } else {
+    return ``
+  }
+}
+
+export const randomColor = number => {
+  const arr_color = ['#e74c3c', '#f39c12', '#2ecc71', '#e67e22', '#2c3e50']
+  return arr_color.slice(0, number)
 }
