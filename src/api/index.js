@@ -25,6 +25,72 @@ export const ListPosts = async () => {
   }
 }
 
+export const ListPostsByCategory = async id => {
+  const token = Cookies.get('user_data_auth_token')
+  let isLoading = true
+  try {
+    const { data } = await Axios.get(`${baseUrl}/contents?category_id=${id}`, {
+      headers: { Authorization: token },
+    })
+    return {
+      isLoading: !isLoading,
+      data: data && data.data,
+      isError: false,
+    }
+  } catch (error) {
+    return {
+      isLoading: isLoading,
+      data: null,
+      isError: error,
+    }
+  }
+}
+
+export const ListRecommendationPosts = async id => {
+  const token = Cookies.get('user_data_auth_token')
+  let isLoading = true
+  try {
+    const { data } = await Axios.get(
+      `${baseUrl}/contents/recommendation?category_id=${id}`,
+      {
+        headers: { Authorization: token },
+      },
+    )
+    return {
+      isLoading: !isLoading,
+      data: data && data.data,
+      isError: false,
+    }
+  } catch (error) {
+    return {
+      isLoading: isLoading,
+      data: null,
+      isError: error,
+    }
+  }
+}
+
+export const ListPopularPosts = async () => {
+  const token = Cookies.get('user_data_auth_token')
+  let isLoading = true
+  try {
+    const { data } = await Axios.get(`${baseUrl}/contents/popular`, {
+      headers: { Authorization: token },
+    })
+    return {
+      isLoading: !isLoading,
+      data: data && data.data,
+      isError: false,
+    }
+  } catch (error) {
+    return {
+      isLoading: isLoading,
+      data: null,
+      isError: error,
+    }
+  }
+}
+
 export const ProfileDetail = async id => {
   let isLoading = true
   try {
@@ -267,6 +333,66 @@ export const LoginAccount = async params => {
       Cookies.set('user_data_avatar_url', data && data.data.avatar_url)
       Cookies.set('user_data_email', data && data.data.email)
       Cookies.set('user_data_role', data && data.data.role)
+      return {
+        isError: false,
+      }
+    } else {
+      return {
+        isError: true,
+      }
+    }
+  } catch (error) {
+    return {
+      data: null,
+      isError:
+        error &&
+        error.response &&
+        error.response.data &&
+        error.response.data.errors,
+    }
+  }
+}
+
+export const ForgotPasswordAccount = async params => {
+  try {
+    const { status } = await Axios.post(
+      `${baseUrl}/users/ask_forgot_password`,
+      JSON.stringify(params.data),
+      {
+        headers: { 'Content-Type': 'application/json' },
+      },
+    )
+    if (status === 200) {
+      return {
+        isError: false,
+      }
+    } else {
+      return {
+        isError: true,
+      }
+    }
+  } catch (error) {
+    return {
+      data: null,
+      isError:
+        error &&
+        error.response &&
+        error.response.data &&
+        error.response.data.errors,
+    }
+  }
+}
+
+export const ResetPassword = async params => {
+  try {
+    const { status } = await Axios.post(
+      `${baseUrl}/users/renew_password`,
+      JSON.stringify(params),
+      {
+        headers: { 'Content-Type': 'application/json' },
+      },
+    )
+    if (status === 200) {
       return {
         isError: false,
       }

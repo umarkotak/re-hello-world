@@ -1,22 +1,57 @@
 import React from 'react'
-import { Container, Row, Col, Alert, Button } from 'shards-react'
+import { Container, Row, Col, Alert } from 'shards-react'
 import { Link } from 'react-router-dom'
-import { ListPosts, LikePost, UnlikePost } from '../../api'
+import {
+  ListPosts,
+  ListPopularPosts,
+  LikePost,
+  UnlikePost,
+  ListCategories,
+  ListPostsByCategory,
+} from '../../api'
 import { isLoggedIn } from '../../utils/helpers'
-import CardComponent from '../../components/card-component'
-import LoadingComponent from './loading-component'
+import CategoryPost from './categories'
+import AllPosts from './all-posts'
+import PopularPosts from './popular-posts'
 
-export default function BlogPosts({ match }) {
+export default function BlogPosts({ history }) {
   const [data, setData] = React.useState()
+  const [listCategories, setListCategories] = React.useState()
+  const [category, setCategory] = React.useState('all')
+  const [dataPopular, setDataPopular] = React.useState()
   const [isLoading, setIsLoading] = React.useState(true)
+  const [isLoadingPopular, setIsLoadingPopular] = React.useState(true)
+  const [isLoadingCategories, setIsLoadingCategories] = React.useState(true)
 
   React.useEffect(() => {
-    ListPosts().then(res => {
-      const { data, isError, isLoading } = res
-      setIsLoading(isLoading)
-      setData(data)
-      if (isError) console.log('Error ==>', isError)
-    })
+    async function fetchDataPosts() {
+      await ListPosts().then(res => {
+        const { data, isError, isLoading } = res
+        setIsLoading(isLoading)
+        setData(data)
+        if (isError) console.log('Error Posts ==>', isError)
+      })
+    }
+    async function fetchDataPupularPosts() {
+      await ListPopularPosts().then(res => {
+        const { data, isError, isLoading } = res
+        setIsLoadingPopular(isLoading)
+        setDataPopular(data)
+        if (isError) console.log('Error Popular Posts ===>', isError)
+      })
+    }
+    async function fetchDataCategories() {
+      await ListCategories().then(res => {
+        const { data, isError, isLoading } = res
+        if (!isError) {
+          setListCategories(data)
+          setIsLoadingCategories(isLoading)
+        }
+      })
+    }
+    fetchDataPosts()
+    fetchDataPupularPosts()
+    fetchDataCategories()
   }, [])
 
   const HandleClickLike = (el, id) => {
@@ -44,7 +79,24 @@ export default function BlogPosts({ match }) {
     }
   }
 
-  console.log('datanya ===>', data)
+  const HandleCategory = val => {
+    if (String(val) === 'all') {
+      setCategory(val)
+      history.push({
+        pathname: '/',
+      })
+    } else {
+      setCategory(val)
+      setIsLoading(true)
+      ListPostsByCategory(val).then(res => {
+        const { data, isError } = res
+        if (!isError) {
+          setIsLoading(false)
+          setData(data)
+        }
+      })
+    }
+  }
 
   return (
     <React.Fragment>
@@ -78,67 +130,28 @@ export default function BlogPosts({ match }) {
             </div>
           </Row>
         </div>
-
-        {isLoading ? (
-          <LoadingComponent />
-        ) : data && data.feeds.length ? (
-          data.feeds.map((item, idx) => (
-            <React.Fragment key={String(idx)}>
-              <Row noGutters className="page-header py-4">
-                <h4 className="text-sm-left" style={{ margin: '0' }}>
-                  <span style={{ textTransform: 'capitalize' }}>
-                    {item.title}
-                  </span>
-                </h4>
-              </Row>
-              <Row>
-                {item &&
-                  item.contents.map((items, i) => (
-                    <Col lg="4" key={String(i)}>
-                      <CardComponent
-                        elementId={`posts-${items.content_id}`}
-                        linkTo={`/post/${items.content_id}`}
-                        imageUrlPost={items.image_url}
-                        titleTagPost={item.title}
-                        descriptionPost={items.description}
-                        datePost={items.created_at}
-                        countLikePost={items.count_like}
-                        likePost={items.liked_by_me}
-                        countCommentPost={items.count_comment}
-                        imageUrlCreator={items.creator_avatar_url}
-                        titleCreator={items.creator_name}
-                        idCreator={items.creator_id}
-                        handleClickLike={() =>
-                          HandleClickLike(
-                            `posts-${items.content_id}`,
-                            items.content_id,
-                          )
-                        }
-                      />
-                    </Col>
-                  ))}
-              </Row>
-            </React.Fragment>
-          ))
-        ) : (
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '10rem',
-            }}
-          >
-            <div className="error__content">
-              <h3>
-                <i className="material-icons">vertical_split</i>Posts not exists
-              </h3>
-              <a href="/" style={{ textDecoration: 'none', color: '#fff' }}>
-                <Button pill>refresh</Button>
-              </a>
-            </div>
-          </div>
-        )}
+        <Row>
+          <Col lg="8" md="8">
+            <CategoryPost
+              data={listCategories}
+              isActive={category}
+              isLoading={isLoadingCategories}
+              handleClickCategory={HandleCategory}
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col lg="8" md="8">
+            <AllPosts
+              isLoading={isLoading}
+              data={data}
+              HandleClickLike={HandleClickLike}
+            />
+          </Col>
+          <Col lg="4" md="4">
+            <PopularPosts isLoading={isLoadingPopular} data={dataPopular} />
+          </Col>
+        </Row>
       </Container>
     </React.Fragment>
   )

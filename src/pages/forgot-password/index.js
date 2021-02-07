@@ -11,13 +11,11 @@ import {
   Button,
   Alert,
 } from 'shards-react'
-import { Link } from 'react-router-dom'
-import { LoginAccount } from '../../api'
+import { ForgotPasswordAccount } from '../../api'
 
-export default function Login() {
+export default function ForgotPassword() {
   const [data, setData] = React.useState({
     email: '',
-    password: '',
   })
   const [isLoading, setIsLoading] = React.useState(false)
   const [responseMessage, setResponseMessage] = React.useState({
@@ -26,9 +24,9 @@ export default function Login() {
     message: '',
   })
 
-  const handleLogin = () => {
+  const handleSubmit = () => {
     setIsLoading(true)
-    LoginAccount({ data }).then(res => {
+    ForgotPasswordAccount({ data }).then(res => {
       setIsLoading(false)
       const { isError } = res
       if (isError) {
@@ -43,15 +41,14 @@ export default function Login() {
           ...responseMessage,
           isError: false,
           isShow: true,
-          message: 'Login Success',
+          message: 'Forgot password success, please check your email',
         })
         setTimeout(() => {
           setResponseMessage({
             ...responseMessage,
             isShow: false,
           })
-          window.location.href = '/'
-        }, 1000)
+        }, 3000)
       }
     })
   }
@@ -77,7 +74,7 @@ export default function Login() {
           <Col sm={{ size: 6, order: 3, offset: 3 }}>
             <Card small>
               <CardHeader className="border-bottom">
-                <h6 className="m-0">Login</h6>
+                <h6 className="m-0">Forgot Password</h6>
               </CardHeader>
               <ListGroup flush>
                 <Container fluid className="px-0">
@@ -97,7 +94,7 @@ export default function Login() {
                 <ListGroupItem className="p-3">
                   <Row>
                     <Col>
-                      <Row form>
+                      <Row form className="mb-2">
                         <Col md="12" lg="12" className="form-group">
                           <label htmlFor="feEmailAddress">Email</label>
                           <FormInput
@@ -110,41 +107,14 @@ export default function Login() {
                             }
                           />
                         </Col>
-                        <Col md="12" lg="12">
-                          <label htmlFor="fePassword">Password</label>
-                          <FormInput
-                            id="fePassword"
-                            type="password"
-                            placeholder="Password"
-                            value={data.password}
-                            onChange={e =>
-                              HandleChange(e.target.value, 'password')
-                            }
-                          />
-                        </Col>
                       </Row>
-                      <Row className="mt-2">
-                        <Col md="6" className="form-group">
-                          <Link to={`/forgot-password`}>Forgot Password ?</Link>
-                        </Col>
-                        <Col md="6" className="form-group text-sm-right">
-                          Don't have an account yet?{' '}
-                          <Link to={`/register`}>Register Here</Link>
-                        </Col>
-                      </Row>
-
                       <Button
                         className="float-right"
                         type="submit"
-                        onClick={() => handleLogin()}
+                        onClick={() => handleSubmit()}
+                        disabled={!data.email || isLoading}
                       >
-                        {isLoading ? (
-                          `Loading ...`
-                        ) : (
-                          <span>
-                            <i className="material-icons">login</i> Login
-                          </span>
-                        )}
+                        {isLoading ? `Loading ...` : <span>Send</span>}
                       </Button>
                     </Col>
                   </Row>

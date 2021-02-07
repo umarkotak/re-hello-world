@@ -36,7 +36,7 @@ export default function SidebarMainNavbar({ hideLogoText }) {
                 role="img"
                 aria-label="lol"
               >
-                Marian LOL 🤣
+                Marian LOL
               </span>
             )}
           </div>

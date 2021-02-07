@@ -74,7 +74,10 @@ export default function CardComponent({
               {descriptionPost}
             </p>
             {textContentPost && (
-              <div dangerouslySetInnerHTML={{ __html: textContentPost }} />
+              <div
+                style={{ color: '#343a40' }}
+                dangerouslySetInnerHTML={{ __html: textContentPost }}
+              />
             )}
           </CardBody>
         </Link>

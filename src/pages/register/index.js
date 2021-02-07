@@ -97,7 +97,7 @@ export default function Register() {
     <Container fluid className="main-content-container px-4">
       <Row noGutters className="page-header py-4"></Row>
       <Row>
-        <Col sm={{ size: 8, order: 2, offset: 2 }}>
+        <Col sm={{ size: 6, order: 3, offset: 3 }}>
           <Card small>
             <CardHeader className="border-bottom">
               <h6 className="m-0">Register</h6>

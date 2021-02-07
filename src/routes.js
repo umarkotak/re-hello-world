@@ -12,6 +12,8 @@ import ComponentsOverview from './pages/ComponentsOverview'
 import ListPosts from './pages/posts'
 import DetailPost from './pages/detail-post'
 import Login from './pages/login'
+import ForgotPassword from './pages/forgot-password'
+import ResetPassword from './pages/reset-password'
 import Register from './pages/register'
 import Me from './pages/me'
 import DetailProfile from './pages/detail-profile'
@@ -68,9 +70,19 @@ const Routes = [
     component: Login,
   },
   {
+    path: '/forgot-password',
+    layout: DefaultLayout,
+    component: ForgotPassword,
+  },
+  {
     path: '/register',
     layout: DefaultLayout,
     component: Register,
+  },
+  {
+    path: '/users/reset_password',
+    layout: DefaultLayout,
+    component: ResetPassword,
   },
 ]
 

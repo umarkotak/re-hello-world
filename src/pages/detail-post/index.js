@@ -1,23 +1,51 @@
 import React from 'react'
 import { Container, Row, Col } from 'shards-react'
-import { DetailPost, LikePost, UnlikePost, CommentPost } from '../../api'
+import {
+  DetailPost,
+  ListRecommendationPosts,
+  LikePost,
+  UnlikePost,
+  CommentPost,
+} from '../../api'
 import CardComponent from '../../components/card-component'
 import CommentComponent from './comments'
+import RecommendationPosts from './recommendation-posts'
 import LoadingComponent from './loading-component'
 
 export default function DetailPostContainer({ match }) {
   const [data, setData] = React.useState()
+  const [dataRecommendPosts, setDataRecommendPosts] = React.useState()
   const [comment, setComment] = React.useState()
   const [isLoading, setIsLoading] = React.useState(true)
+  const [isLoadingRecommendPosts, setIsLoadingRecommendPosts] = React.useState(
+    true,
+  )
 
   React.useEffect(() => {
-    DetailPost({ id: match.params.id }).then(res => {
-      const { data, isError, isLoading } = res
-      console.log('datanya ===>', data)
-      setIsLoading(isLoading)
-      setData(data)
-      if (isError) console.log('Error ==>', isError)
-    })
+    async function FetchDetailPost() {
+      await DetailPost({ id: match.params.id }).then(res => {
+        const { data, isError, isLoading } = res
+        if (!isError) {
+          setIsLoading(isLoading)
+          setData(data)
+        } else {
+          console.log('Error ==>', isError)
+        }
+      })
+    }
+    async function FetchRecommendationPosts() {
+      await ListRecommendationPosts(1).then(res => {
+        const { data, isError, isLoading } = res
+        if (!isError) {
+          setDataRecommendPosts(data)
+          setIsLoadingRecommendPosts(isLoading)
+        } else {
+          console.log('Error Recommendation Posts ==>', isError)
+        }
+      })
+    }
+    FetchDetailPost()
+    FetchRecommendationPosts()
   }, [])
 
   const HandleClickLike = (el, id) => {
@@ -107,7 +135,7 @@ export default function DetailPostContainer({ match }) {
                   elementId="post-1"
                   imageUrlPost={data.image_url}
                   videoUrlPost={data.video_url}
-                  titleTagPost={data.tag}
+                  titleTagPost={data.category && data.category.title}
                   descriptionPost={data.description}
                   textContentPost={data.text_content}
                   datePost={data.created_at}
@@ -127,12 +155,18 @@ export default function DetailPostContainer({ match }) {
             )}
           </Row>
           <Row>
-            <Col lg="12" md="12">
+            <Col lg="7" md="7">
               <CommentComponent
                 valueComment={comment}
                 HandleOnChange={HandleOnChange}
                 HandleSubmitComment={HandleSubmitComment}
                 comments={data && data.comments}
+              />
+            </Col>
+            <Col lg="5" md="5">
+              <RecommendationPosts
+                data={dataRecommendPosts}
+                isLoading={isLoadingRecommendPosts}
               />
             </Col>
           </Row>

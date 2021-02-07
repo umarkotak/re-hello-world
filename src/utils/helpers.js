@@ -54,6 +54,15 @@ export const wordingLikesContent = (data, count) => {
 }
 
 export const randomColor = number => {
-  const arr_color = ['#e74c3c', '#f39c12', '#2ecc71', '#e67e22', '#2c3e50']
+  const arr_color = [
+    '#e74c3c',
+    '#f39c12',
+    '#2ecc71',
+    '#e67e22',
+    '#2c3e50',
+    '#6610f2',
+    '#dc3545',
+    '#ffc107',
+  ]
   return arr_color.slice(0, number)
 }
