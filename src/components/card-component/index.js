@@ -161,19 +161,25 @@ export default function CardComponent({
             </span>
           )}
           {isLoggedIn() ? (
-            <Button
-              id={`${elementId}`}
-              className="mr-1"
-              size="sm"
-              theme="white"
-              onClick={handleClickLike}
-            >
-              <i
-                className={`fas fa-heart ${likePost ? 'text-danger' : ''}`}
-                title="bookmark"
-              />{' '}
-              <span>{countLikePost}</span>
-            </Button>
+            <React.Fragment>
+              <Button
+                id={`${elementId}`}
+                className="mr-1"
+                size="sm"
+                theme="white"
+                onClick={handleClickLike}
+              >
+                <i
+                  className={`fas fa-heart ${likePost ? 'text-danger' : ''}`}
+                  title="like"
+                />{' '}
+                <span>{countLikePost}</span>
+              </Button>
+              <Button size="sm" theme="white">
+                <i className="fas fa-comment" title="comment" />{' '}
+                {countCommentPost}
+              </Button>
+            </React.Fragment>
           ) : (
             <Link to={`/login`}>
               <Button
@@ -185,15 +191,16 @@ export default function CardComponent({
               >
                 <i
                   className={`fas fa-heart ${likePost ? 'text-danger' : ''}`}
-                  title="bookmark"
+                  title="like"
                 />{' '}
                 <span>{countLikePost}</span>
               </Button>
+              <Button size="sm" theme="white">
+                <i className="fas fa-comment" title="comment" />{' '}
+                {countCommentPost}
+              </Button>
             </Link>
           )}
-          <Button size="sm" theme="white">
-            <i className="fas fa-comment" title="bookmark" /> {countCommentPost}
-          </Button>
         </div>
       </CardFooter>
     </Card>
