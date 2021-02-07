@@ -113,11 +113,11 @@ export default function ResetPasswordContainer({ location, history }) {
                     <Col>
                       <Row form className="mb-2">
                         <Col md="12" lg="12" className="form-group">
-                          <label htmlFor="fePassword">Password</label>
+                          <label htmlFor="fePassword">New Password</label>
                           <FormInput
                             id="fePassword"
                             type="password"
-                            placeholder="Password ..."
+                            placeholder="New Password ..."
                             value={data.password}
                             onChange={e =>
                               HandleChange(e.target.value, 'password')
@@ -126,13 +126,13 @@ export default function ResetPasswordContainer({ location, history }) {
                         </Col>
                         <Col md="12" lg="12" className="form-group">
                           <label htmlFor="feConfirmPassword">
-                            Password Confirmation
+                            New Password Confirmation
                           </label>
                           <FormInput
                             id="feConfirmPassword"
                             type="password"
                             invalid={invalid}
-                            placeholder="Password confirmation ..."
+                            placeholder="New Password confirmation ..."
                             value={data.password_confirmation}
                             onChange={e =>
                               HandleChange(
