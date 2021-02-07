@@ -6,9 +6,7 @@ import { DefaultLayout } from './layouts'
 import { isLoggedIn } from './utils/helpers'
 
 // Route Views
-import BlogOverview from './pages/BlogOverview'
 import AddNewPost from './pages/add-new-post'
-import ComponentsOverview from './pages/ComponentsOverview'
 import ListPosts from './pages/posts'
 import DetailPost from './pages/detail-post'
 import Login from './pages/login'
@@ -24,11 +22,6 @@ const Routes = [
     exact: true,
     layout: DefaultLayout,
     component: () => <Redirect to="/posts" />,
-  },
-  {
-    path: '/blog-overview',
-    layout: DefaultLayout,
-    component: BlogOverview,
   },
   {
     path: '/add-post',
@@ -48,11 +41,6 @@ const Routes = [
     path: '/profile/:id',
     layout: DefaultLayout,
     component: DetailProfile,
-  },
-  {
-    path: '/components-overview',
-    layout: DefaultLayout,
-    component: ComponentsOverview,
   },
   {
     path: '/posts',
