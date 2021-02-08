@@ -25,6 +25,17 @@ export default function DetailPostContainer({ match }) {
     async function FetchDetailPost() {
       await DetailPost({ id: match.params.id }).then(res => {
         const { data, isError, isLoading } = res
+        if (data && data.category_id) {
+          ListRecommendationPosts(data && data.category_id).then(res => {
+            const { data, isError, isLoading } = res
+            if (!isError) {
+              setDataRecommendPosts(data)
+              setIsLoadingRecommendPosts(isLoading)
+            } else {
+              console.log('Error Recommendation Posts ==>', isError)
+            }
+          })
+        }
         if (!isError) {
           setIsLoading(isLoading)
           setData(data)
@@ -33,19 +44,7 @@ export default function DetailPostContainer({ match }) {
         }
       })
     }
-    async function FetchRecommendationPosts() {
-      await ListRecommendationPosts(1).then(res => {
-        const { data, isError, isLoading } = res
-        if (!isError) {
-          setDataRecommendPosts(data)
-          setIsLoadingRecommendPosts(isLoading)
-        } else {
-          console.log('Error Recommendation Posts ==>', isError)
-        }
-      })
-    }
     FetchDetailPost()
-    FetchRecommendationPosts()
   }, [])
 
   const HandleClickLike = (el, id) => {
