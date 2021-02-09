@@ -14,7 +14,7 @@ import {
 import { Link } from 'react-router-dom'
 import { LoginAccount } from '../../api'
 
-export default function Login() {
+export default function Login({ history }) {
   const [data, setData] = React.useState({
     email: '',
     password: '',
@@ -50,7 +50,7 @@ export default function Login() {
             ...responseMessage,
             isShow: false,
           })
-          window.location.href = '/'
+          history.goBack()
         }, 1000)
       }
     })
