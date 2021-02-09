@@ -23,10 +23,14 @@ export default function DetailPostContainer({ match }) {
 
   React.useEffect(() => {
     async function FetchDetailPost() {
+      if (match.params.id) setIsLoading(true)
       await DetailPost({ id: match.params.id }).then(res => {
         const { data, isError, isLoading } = res
         if (data && data.category_id) {
-          ListRecommendationPosts(data && data.category_id).then(res => {
+          ListRecommendationPosts({
+            category_id: data && data.category_id,
+            content_id: data && data.id,
+          }).then(res => {
             const { data, isError, isLoading } = res
             if (!isError) {
               setDataRecommendPosts(data)
@@ -45,7 +49,7 @@ export default function DetailPostContainer({ match }) {
       })
     }
     FetchDetailPost()
-  }, [])
+  }, [match.params.id])
 
   const HandleClickLike = (el, id) => {
     let like = document

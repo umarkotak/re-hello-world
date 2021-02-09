@@ -1,5 +1,8 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import {
+  Container,
+  Alert,
   Card,
   CardHeader,
   CardBody,
@@ -8,6 +11,7 @@ import {
   Col,
   FormTextarea,
 } from 'shards-react'
+import { isLoggedIn } from '../../utils/helpers'
 
 export default function Comments({
   comments,
@@ -26,29 +30,44 @@ export default function Comments({
 
       <CardBody className="p-0">
         <div className="blog-comments__item p-3">
-          <Row>
-            <Col lg="12" md="12">
-              <FormTextarea
-                size="lg"
-                className="mb-3"
-                placeholder="Comment ..."
-                value={valueComment}
-                onChange={e => HandleOnChange(e.target.value)}
-              />
-            </Col>
-            <Col lg="12" md="12">
-              <Button
-                onClick={() => HandleSubmitComment()}
-                disabled={!valueComment}
-              >
-                <i className="fas fa-paper-plane"></i> Post
-              </Button>
-            </Col>
-          </Row>
+          {isLoggedIn() ? (
+            <Row>
+              <Col lg="12" md="12">
+                <FormTextarea
+                  size="lg"
+                  className="mb-3"
+                  placeholder="Comment ..."
+                  value={valueComment}
+                  onChange={e => HandleOnChange(e.target.value)}
+                />
+              </Col>
+              <Col lg="12" md="12">
+                <Button
+                  onClick={() => HandleSubmitComment()}
+                  disabled={!valueComment}
+                >
+                  <i className="fas fa-paper-plane"></i> Post
+                </Button>
+              </Col>
+            </Row>
+          ) : (
+            <Container fluid className="px-0">
+              <Alert className="mb-0 alert-info">
+                <i className="fa fa-info mx-2"></i> please login to enjoy this
+                feature{' '}
+                <Link
+                  to={'/login'}
+                  style={{ color: 'white', textDecoration: 'underline' }}
+                >
+                  Login Here
+                </Link>
+              </Alert>
+            </Container>
+          )}
         </div>
-        <div style={{ height: '300px', overflow: 'scroll' }}>
-          {comments &&
-            comments.map((item, idx) => (
+        {comments && comments.length ? (
+          <div style={{ height: '300px', overflow: 'scroll' }}>
+            {comments.map((item, idx) => (
               <div key={idx} className="blog-comments__item d-flex p-3">
                 <div className="blog-comments__avatar mr-3">
                   <img src={item.avatar_url} alt={item.username} />
@@ -69,7 +88,8 @@ export default function Comments({
                 </div>
               </div>
             ))}
-        </div>
+          </div>
+        ) : null}
       </CardBody>
     </Card>
   )

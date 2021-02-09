@@ -46,12 +46,12 @@ export const ListPostsByCategory = async id => {
   }
 }
 
-export const ListRecommendationPosts = async id => {
+export const ListRecommendationPosts = async params => {
   const token = Cookies.get('user_data_auth_token')
   let isLoading = true
   try {
     const { data } = await Axios.get(
-      `${baseUrl}/contents/recommendation?category_id=${id}`,
+      `${baseUrl}/contents/recommendation?category_id=${params.category_id}&content_id=${params.content_id}`,
       {
         headers: { Authorization: token },
       },
