@@ -66,7 +66,7 @@ export default function Comments({
           )}
         </div>
         {comments && comments.length ? (
-          <div style={{ height: '300px', overflow: 'scroll' }}>
+          <div style={{ maxHeight: '300px', overflow: 'scroll' }}>
             {comments.map((item, idx) => (
               <div key={idx} className="blog-comments__item d-flex p-3">
                 <div className="blog-comments__avatar mr-3">

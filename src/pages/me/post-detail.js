@@ -9,7 +9,7 @@ export default function PostDetail({ data }) {
         <h6 className="m-0">All Posts</h6>
       </CardHeader>
       {data && data.length ? (
-        <CardBody style={{ height: '550px', overflowY: 'scroll' }}>
+        <CardBody style={{ maxHeight: '550px', overflowY: 'scroll' }}>
           <Row>
             {data &&
               data.map((item, idx) => (

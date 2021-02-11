@@ -22,7 +22,7 @@ export default function RecommendationPosts({ isLoading, data }) {
           {data && data.length ? (
             <CardBody
               style={{
-                height: '450px',
+                maxHeight: '450px',
                 overflowY: 'scroll',
               }}
             >

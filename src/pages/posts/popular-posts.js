@@ -22,7 +22,7 @@ export default function PopularPosts({ isLoading, data }) {
           {data && data.length ? (
             <CardBody
               style={{
-                height: '500px',
+                maxHeight: '500px',
                 overflowY: 'scroll',
               }}
             >

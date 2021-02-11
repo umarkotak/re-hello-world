@@ -1,6 +1,16 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Card, Badge, CardBody, CardFooter, Button } from 'shards-react'
+import {
+  Card,
+  Badge,
+  CardBody,
+  CardFooter,
+  Button,
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+} from 'shards-react'
 import ReactPlayer from 'react-player'
 import {
   isLoggedIn,
@@ -40,6 +50,8 @@ export default function CardComponent({
   size,
   handleClickLike,
 }) {
+  const [isShow, setIsSHow] = React.useState(false)
+
   return (
     <Card small className="card-post mb-4">
       {linkTo ? (
@@ -179,6 +191,18 @@ export default function CardComponent({
                 <i className="fas fa-comment" title="comment" />{' '}
                 {countCommentPost}
               </Button>
+              <Dropdown
+                open={isShow}
+                toggle={() => setIsSHow(isShow => !isShow)}
+                addonType="append"
+              >
+                <DropdownToggle caret>Dropdown</DropdownToggle>
+                <DropdownMenu small right>
+                  <DropdownItem>Action</DropdownItem>
+                  <DropdownItem>Another action</DropdownItem>
+                  <DropdownItem>Something else here</DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
             </React.Fragment>
           ) : (
             <Link to={`/login`}>
