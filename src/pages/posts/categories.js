@@ -8,6 +8,7 @@ export default function Categories({
   isLoading,
   handleClickCategory,
 }) {
+  console.log('datanya ====>', data)
   return (
     <Col>
       {isLoading ? (
@@ -22,7 +23,7 @@ export default function Categories({
             onClick={() => handleClickCategory('all')}
             style={{ textTransform: 'capitalize' }}
           >
-            <i className={`fa`}></i>
+            <i className={`mr-1 fa fa-globe`}></i>
             all
           </Button>
           {data.map((item, idx) => (
@@ -35,7 +36,7 @@ export default function Categories({
               onClick={() => handleClickCategory(item.id)}
               style={{ textTransform: 'capitalize' }}
             >
-              <i className={`fa`}></i>
+              <i className={`mr-1 fa fas ${item.fa_icon}`}></i>
               {item.title}
             </Button>
           ))}
