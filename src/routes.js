@@ -9,6 +9,7 @@ import { isLoggedIn } from './utils/helpers'
 import AddNewPost from './pages/add-new-post'
 import ListPosts from './pages/posts'
 import DetailPost from './pages/detail-post'
+import EditPost from './pages/edit-post'
 import Login from './pages/login'
 import ForgotPassword from './pages/forgot-password'
 import ResetPassword from './pages/reset-password'
@@ -51,6 +52,11 @@ const Routes = [
     path: '/post/:id',
     layout: DefaultLayout,
     component: DetailPost,
+  },
+  {
+    path: '/edit/:id',
+    layout: DefaultLayout,
+    component: EditPost,
   },
   {
     path: '/login',

@@ -72,7 +72,7 @@ export default function PostDetail({ data }) {
       ) : (
         <CardBody>
           <p className="text-center">
-            <i class="fas fa-exclamation-circle"></i> has no post
+            <i className="fas fa-exclamation-circle"></i> has no post
           </p>
         </CardBody>
       )}

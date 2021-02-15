@@ -24,6 +24,7 @@ import {
 export default function CardComponent({
   elementId,
   linkTo,
+  idPost,
   imageUrlPost,
   videoUrlPost,
   titleTagPost,
@@ -39,6 +40,7 @@ export default function CardComponent({
   idCreator,
   size,
   handleClickLike,
+  handleClickDelete,
 }) {
   return (
     <Card small className="card-post mb-4">
@@ -179,16 +181,25 @@ export default function CardComponent({
                 <i className="fas fa-comment" title="comment" />{' '}
                 {countCommentPost}
               </Button>
-              {size === 'lg' && (
-                <React.Fragment>
-                  <Button size="sm" theme="white" className="ml-1">
-                    <i className="fas fa-trash text-danger" title="delete" />{' '}
-                  </Button>
-                  <Button size="sm" theme="white" className="ml-1">
-                    <i className="fas fa-edit text-primary" title="edit" />{' '}
-                  </Button>
-                </React.Fragment>
-              )}
+              {size === 'lg' &&
+                isLoggedIn() &&
+                userLoggedIn().username === titleCreator && (
+                  <React.Fragment>
+                    <Button
+                      size="sm"
+                      theme="white"
+                      className="ml-1"
+                      onClick={handleClickDelete}
+                    >
+                      <i className="fas fa-trash text-danger" title="delete" />{' '}
+                    </Button>
+                    <Link to={`/edit/${idPost}`}>
+                      <Button size="sm" theme="white" className="ml-1">
+                        <i className="fas fa-edit text-primary" title="edit" />{' '}
+                      </Button>
+                    </Link>
+                  </React.Fragment>
+                )}
             </React.Fragment>
           ) : (
             <Link to={`/login`}>

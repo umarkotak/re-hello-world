@@ -1,22 +1,25 @@
 import React from 'react'
-import { Container, Row, Col } from 'shards-react'
+import { Container, Row, Col, Button } from 'shards-react'
 import {
   DetailPost,
+  DeletePost,
   ListRecommendationPosts,
   LikePost,
   UnlikePost,
   CommentPost,
 } from '../../api'
 import CardComponent from '../../components/card-component'
+import Modal from '../../components/modal'
 import CommentComponent from './comments'
 import RecommendationPosts from './recommendation-posts'
 import LoadingComponent from './loading-component'
 
-export default function DetailPostContainer({ match }) {
+export default function DetailPostContainer({ match, history }) {
   const [data, setData] = React.useState()
   const [dataRecommendPosts, setDataRecommendPosts] = React.useState()
   const [comment, setComment] = React.useState()
   const [isLoading, setIsLoading] = React.useState(true)
+  const [isShowModalEdit, setIsShowModalEdit] = React.useState(false)
   const [isLoadingRecommendPosts, setIsLoadingRecommendPosts] = React.useState(
     true,
   )
@@ -101,80 +104,115 @@ export default function DetailPostContainer({ match }) {
     })
   }
 
+  const HandleClickDelete = () => {
+    setIsShowModalEdit(!isShowModalEdit)
+  }
+
+  const ConfirmationDelete = () => {
+    DeletePost(match.params.id).then(res => {
+      if (res && !res.isError) {
+        setIsLoading(true)
+        setTimeout(() => {
+          history.push({
+            pathname: '/',
+          })
+        }, 2000)
+      }
+    })
+  }
+
   return (
-    <Container fluid className="main-content-container px-4">
-      {isLoading ? (
-        <Row
-          noGutters
-          className="d-flex page-header py-4 justify-content-center"
-        >
-          <LoadingComponent />
-        </Row>
-      ) : (
-        <React.Fragment>
-          <div
-            style={{
-              position: 'sticky',
-              top: '3.75rem',
-              zIndex: '999',
-            }}
+    <React.Fragment>
+      <Container fluid className="main-content-container px-4">
+        {isLoading ? (
+          <Row
+            noGutters
+            className="d-flex page-header py-4 justify-content-center"
           >
-            <Row noGutters className="page-header py-4">
-              <div
-                className="bg-primary"
-                style={{ borderRadius: '30px', color: '#fff', padding: '10px' }}
-              >
-                <h4 style={{ color: '#f2f2f2', margin: 0 }}>
-                  <i className="material-icons">vertical_split</i>{' '}
-                  {data && data.title}
-                </h4>
-              </div>
+            <LoadingComponent />
+          </Row>
+        ) : (
+          <React.Fragment>
+            <div
+              style={{
+                position: 'sticky',
+                top: '3.75rem',
+                zIndex: '999',
+              }}
+            >
+              <Row noGutters className="page-header py-4">
+                <div
+                  className="bg-primary"
+                  style={{
+                    borderRadius: '30px',
+                    color: '#fff',
+                    padding: '10px',
+                  }}
+                >
+                  <h4 style={{ color: '#f2f2f2', margin: 0 }}>
+                    <i className="material-icons">vertical_split</i>{' '}
+                    {data && data.title}
+                  </h4>
+                </div>
+              </Row>
+            </div>
+            <Row>
+              {data && (
+                <Col lg="12" md="12">
+                  <CardComponent
+                    elementId="post-1"
+                    idPost={match.params.id}
+                    imageUrlPost={data.image_url}
+                    videoUrlPost={data.video_url}
+                    titleTagPost={data.category && data.category.title}
+                    descriptionPost={data.description}
+                    textContentPost={data.text_content}
+                    datePost={data.created_at}
+                    countLikePost={data.count_like}
+                    likePost={data.liked_by_me}
+                    whoLikesContent={data.user_who_likes}
+                    countCommentPost={data.count_comment}
+                    imageUrlCreator={data.creator_avatar_url}
+                    titleCreator={data.creator_name}
+                    idCreator={data.creator_id}
+                    handleClickLike={() =>
+                      HandleClickLike('post-1', match.params.id)
+                    }
+                    handleClickDelete={() => HandleClickDelete()}
+                    size="lg"
+                  />
+                </Col>
+              )}
             </Row>
-          </div>
-          <Row>
-            {data && (
-              <Col lg="12" md="12">
-                <CardComponent
-                  elementId="post-1"
-                  imageUrlPost={data.image_url}
-                  videoUrlPost={data.video_url}
-                  titleTagPost={data.category && data.category.title}
-                  descriptionPost={data.description}
-                  textContentPost={data.text_content}
-                  datePost={data.created_at}
-                  countLikePost={data.count_like}
-                  likePost={data.liked_by_me}
-                  whoLikesContent={data.user_who_likes}
-                  countCommentPost={data.count_comment}
-                  imageUrlCreator={data.creator_avatar_url}
-                  titleCreator={data.creator_name}
-                  idCreator={data.creator_id}
-                  handleClickLike={() =>
-                    HandleClickLike('post-1', match.params.id)
-                  }
-                  size="lg"
+            <Row>
+              <Col lg="7" md="7">
+                <CommentComponent
+                  valueComment={comment}
+                  HandleOnChange={HandleOnChange}
+                  HandleSubmitComment={HandleSubmitComment}
+                  comments={data && data.comments}
                 />
               </Col>
-            )}
-          </Row>
-          <Row>
-            <Col lg="7" md="7">
-              <CommentComponent
-                valueComment={comment}
-                HandleOnChange={HandleOnChange}
-                HandleSubmitComment={HandleSubmitComment}
-                comments={data && data.comments}
-              />
-            </Col>
-            <Col lg="5" md="5">
-              <RecommendationPosts
-                data={dataRecommendPosts}
-                isLoading={isLoadingRecommendPosts}
-              />
-            </Col>
-          </Row>
-        </React.Fragment>
-      )}
-    </Container>
+              <Col lg="5" md="5">
+                <RecommendationPosts
+                  data={dataRecommendPosts}
+                  isLoading={isLoadingRecommendPosts}
+                />
+              </Col>
+            </Row>
+          </React.Fragment>
+        )}
+      </Container>
+      <Modal
+        show={isShowModalEdit}
+        title="Confirmation"
+        onClick={() => setIsShowModalEdit(!isShowModalEdit)}
+      >
+        <p>Are you sure to delete post ?</p>
+        <Button className="btn btn-danger" onClick={() => ConfirmationDelete()}>
+          Yes
+        </Button>
+      </Modal>
+    </React.Fragment>
   )
 }

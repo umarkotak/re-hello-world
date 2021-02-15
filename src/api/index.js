@@ -230,6 +230,37 @@ export const AddPost = async params => {
   }
 }
 
+export const EditPost = async params => {
+  const token = Cookies.get('user_data_auth_token')
+  try {
+    const { data, status } = await Axios.patch(
+      `${baseUrl}/contents/${params.id}`,
+      JSON.stringify(params.body),
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+      },
+    )
+    if (status === 200) {
+      return {
+        data: data && data.data,
+        isError: false,
+      }
+    }
+  } catch (error) {
+    return {
+      data: null,
+      isError:
+        error &&
+        error.response &&
+        error.response.data &&
+        error.response.data.errors,
+    }
+  }
+}
+
 export const CommentPost = async params => {
   const token = Cookies.get('user_data_auth_token')
   try {
@@ -409,6 +440,27 @@ export const ResetPassword = async params => {
         error.response &&
         error.response.data &&
         error.response.data.errors,
+    }
+  }
+}
+
+export const DeletePost = async id => {
+  const token = Cookies.get('user_data_auth_token')
+  let isLoading = true
+  try {
+    const { data } = await Axios.delete(`${baseUrl}/contents/${id}`, {
+      headers: { Authorization: token },
+    })
+    return {
+      isLoading: !isLoading,
+      data: data && data.data,
+      isError: false,
+    }
+  } catch (error) {
+    return {
+      isLoading: isLoading,
+      data: null,
+      isError: error,
     }
   }
 }

@@ -19,7 +19,7 @@ import { AddPost, ListCategories } from '../../api'
 import 'react-quill/dist/quill.snow.css'
 import '../../assets/quill.css'
 
-export default function AddNewPost() {
+export default function AddNewPost({ history }) {
   const warning = {
     title: 'Please enter title',
     description: 'Please enter description',
@@ -105,6 +105,11 @@ export default function AddNewPost() {
           isShow: true,
           message: 'Add Post Success',
         })
+        setTimeout(() => {
+          history.push({
+            pathname: '/',
+          })
+        }, 2000)
       }
     })
   }
