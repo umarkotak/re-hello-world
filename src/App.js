@@ -27,9 +27,11 @@ export default function App() {
                 component={props => {
                   return (
                     <route.layout {...props}>
-                      {route.isLoggedIn === false ? (
+                      {route.isLoggedIn === false &&
+                      route.path !== '/register' ? (
                         <route.loginComponent {...props} />
-                      ) : route.isLoggedIn === true ? (
+                      ) : route.isLoggedIn === true &&
+                        route.path === '/register' ? (
                         <route.loginComponent {...props} />
                       ) : (
                         <route.component {...props} />
