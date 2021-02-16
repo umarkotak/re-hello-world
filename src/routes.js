@@ -14,6 +14,7 @@ import Login from './pages/login'
 import ForgotPassword from './pages/forgot-password'
 import ResetPassword from './pages/reset-password'
 import Register from './pages/register'
+import About from './pages/about'
 import Me from './pages/me'
 import DetailProfile from './pages/detail-profile'
 
@@ -69,9 +70,16 @@ const Routes = [
     component: ForgotPassword,
   },
   {
+    path: '/about',
+    layout: DefaultLayout,
+    component: About,
+  },
+  {
     path: '/register',
     layout: DefaultLayout,
     component: Register,
+    isLoggedIn: isLoggedIn(),
+    loginComponent: () => <Redirect to="/posts" />,
   },
   {
     path: '/users/reset_password',

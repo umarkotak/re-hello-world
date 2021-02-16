@@ -29,6 +29,8 @@ export default function App() {
                     <route.layout {...props}>
                       {route.isLoggedIn === false ? (
                         <route.loginComponent {...props} />
+                      ) : route.isLoggedIn === true ? (
+                        <route.loginComponent {...props} />
                       ) : (
                         <route.component {...props} />
                       )}

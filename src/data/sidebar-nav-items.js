@@ -5,5 +5,10 @@ export default function() {
       htmlBefore: '<i class="material-icons">home</i>',
       to: '/posts',
     },
+    {
+      title: 'About',
+      htmlBefore: '<i class="material-icons">info</i>',
+      to: '/about',
+    },
   ]
 }
