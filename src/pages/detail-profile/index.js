@@ -22,8 +22,6 @@ export default function Me({ match }) {
     })
   }, [])
 
-  console.log('datanya ==>',data)
-
   return (
     <Container fluid className="main-content-container px-4">
       {isLoading ? (

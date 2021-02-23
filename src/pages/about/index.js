@@ -34,10 +34,21 @@ export default function AddNewPost() {
                   alt=""
                   width="100px"
                 />
-                <p style={{ fontSize: '16px', margin: '10px 0 0 0' }}>
+                <p style={{ fontSize: '16px', margin: '10px 0 35px 0' }}>
                   <strong>Marian LOL</strong> is a website build for comunity to
                   share their thoughts, findings, ideas, and many other
                   positiveness through image, video and text
+                </p>
+                <h5>
+                  <button className="btn btn-info">
+                    <i className="fa fa-info-circle"></i> Disclaimer
+                  </button>
+                </h5>
+                <p style={{ fontSize: '16px' }}>
+                  marian lol is used only for sharing information, we are not
+                  owning any of the content. we are using content that publicly
+                  available for everyone and curate it so more people can enjoy
+                  it.
                 </p>
               </Col>
               <Col lg="12" md="12" className="d-flex justify-content-center">

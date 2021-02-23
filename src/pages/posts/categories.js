@@ -8,7 +8,6 @@ export default function Categories({
   isLoading,
   handleClickCategory,
 }) {
-  console.log('datanya ====>', data)
   return (
     <Col>
       {isLoading ? (
